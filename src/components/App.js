@@ -164,7 +164,19 @@ class App extends React.Component {
                     </div>
                 }
 
-                
+                {this.state.newLocation === "" 
+                    ? "" 
+                    : this.state.newLocation.data.map((day, index) => {
+                        return index > 0 && index < 6 
+                            ?  <div className=''>
+                                    <div className=''><strong>{day.valid_date}</strong></div>
+                                    <img src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} className="" alt=""/>
+                                    <div className=''>Max Temp <strong>{day.max_temp}&#176;</strong></div>
+                                    <div className=''>Min Temp <strong>{day.min_temp}&#176;</strong></div>
+                                </div>
+                        : null
+                    })
+                }
                 
             </div>
         )
