@@ -136,10 +136,35 @@ class App extends React.Component {
 
                     <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Go</button>
                 </form>
-                <h1>{this.state.heading === "" ? "" : this.state.heading }</h1>
+
+                
+                
+                {this.state.newLocation === "" 
+                        ? "" 
+                        : <div className=''>
+                            <img src={`https://www.weatherbit.io/static/img/icons/${this.state.newLocation.data[0].weather.icon}.png`} className="" alt=""/>
+                            <div className=''><strong>{this.state.newLocation.data[0].temp}&#176;</strong></div>
+                            <h1>{this.state.heading}</h1>
+                            <div className=''><strong>{this.state.newLocation.data[0].valid_date}</strong></div>
+                            <div className=''><strong>{this.state.newLocation.data[0].weather.description}</strong></div>
+                        </div>
+                    }
+
                 {this.state.newLocation === "" 
                     ? "" 
-                    : <div className=''>{this.state.newLocation.data[0].temp}</div>}
+                    : <div className=''>
+                        <div className=''>Wind speed <strong>{this.state.newLocation.data[0].wind_spd}m/s</strong></div>
+                        <div className=''>Wind direction <strong>{this.state.newLocation.data[0].wind_cdir_full}</strong></div>
+                        <div className=''>Max Temp <strong>{this.state.newLocation.data[0].max_temp}&#176;</strong></div>
+                        <div className=''>Min Temp <strong>{this.state.newLocation.data[0].min_temp}&#176;</strong></div>
+                        <div className=''>Clouds <strong>{this.state.newLocation.data[0].clouds}%</strong></div>
+                        <div className=''>Probability of Precipitation <strong>{this.state.newLocation.data[0].pop}%</strong></div>
+                        <div className=''>Average pressure <strong>{this.state.newLocation.data[0].pres}mb</strong></div>
+                        <div className=''>Average relative humidity <strong>{this.state.newLocation.data[0].rh}%</strong></div>
+                    </div>
+                }
+
+                
                 
             </div>
         )
