@@ -12,7 +12,7 @@ class App extends React.Component {
             heading: ""
         }
         this.getUserLocation = this.getUserLocation.bind(this);
-        this.getNewLocation = this.getNewLocation.bind(this);
+        this.getNewLocationSubmit = this.getNewLocationSubmit.bind(this);
         this.fetchLocation = this.fetchLocation.bind(this);
         this.newLocationChangeHandler = this.newLocationChangeHandler.bind(this);
         this.updateSearchField = this.updateSearchField.bind(this);
@@ -52,23 +52,36 @@ class App extends React.Component {
     }
 
     // Get new location details (city name and country code)
-    getNewLocation(event){
+    getNewLocationSubmit(event){
         event.preventDefault();
-        fetch(`/api/details/${this.state.location}`)
-            .then(cityDetails => cityDetails.json())
-            .then(cityDetails => {
-                this.setState({
-                    country: cityDetails.geobytesinternet,
-                    heading: cityDetails.geobytescity + ', ' + cityDetails.geobytescountry,
-                    location: cityDetails.geobytescity
-                })
-                this.fetchLocation();
-            })
-    }
+        // document.querySelector('#search').addEventListener('keypress', (event) => {
+        //     let code = "";
+        //     code = event.key === "Enter" || event.keyCode || event.which;
 
+        // console.log('event.key', event.key)
+        // console.log('event.keyCode', event.keyCode)
+        // console.log('event.which', event.whichy)
+            
+        // });
+        // if(event.key === "Enter" || event.keyCode || event.which) {
+        //     return false;
+        // } else {
+            fetch(`/api/details/${this.state.location}`)
+                .then(cityDetails => cityDetails.json())
+                .then(cityDetails => {
+                    this.setState({
+                        country: cityDetails.geobytesinternet,
+                        heading: cityDetails.geobytescity + ', ' + cityDetails.geobytescountry,
+                        location: cityDetails.geobytescity
+                    })
+                    this.fetchLocation();
+                })   
+        // }
+    }
 
     // Get search autocomplete cities list
     newLocationChangeHandler(event){
+        event.preventDefault();
         if(event.target.value.length > 2) {
             fetch(`/api/geo/${event.target.value}`)
                 .then(cities => cities.json())
@@ -101,7 +114,7 @@ class App extends React.Component {
     render(){
         return (
             <div>
-                <form onSubmit={this.getNewLocation} className="search" id="search">
+                <form onSubmit={(e) => e.preventDefault()} className="search" id="search">
                     <label className="search__label" htmlFor="search__field">City</label>
                     <input
                         onChange={this.newLocationChangeHandler} 
@@ -121,7 +134,7 @@ class App extends React.Component {
                             }
                         </ul>
 
-                    <button className="btn btn__search">Go</button>
+                    <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Go</button>
                 </form>
                 <h1>{this.state.heading === "" ? "" : this.state.heading }</h1>
                 {this.state.newLocation === "" 
