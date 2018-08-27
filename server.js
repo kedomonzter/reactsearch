@@ -3,6 +3,16 @@ const fetch = require('node-fetch');
 const app = express();
 
 app.set('view engine', 'hbs');
+
+
+app.use(function (req, res, next){
+    if (req.headers['x-forwarded-proto'] === 'https') {
+      res.redirect('http://' + req.hostname + req.url);
+    } else {
+      next();
+    }
+  });
+
 app.use('/dist', express.static('dist'));
 
 // Fetch the weather details for the selected city
