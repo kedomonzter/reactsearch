@@ -39,5 +39,12 @@ app.get('*', (req, res) => {
     res.render("index");
 });
 
-app.listen(8080, () => console.log('Listening on port 8080'));
+// app.listen(8080, () => console.log('Listening on port 8080'));
+
+// Heroku
+const port = process.env.PORT || 8080;
+app.listen( port, function(){
+  console.log(`Listening on port number ${port}`);
+});
+
 
