@@ -215,7 +215,7 @@ class App extends React.Component {
                         <p>Try using the search field.</p>
                     </div>
                     
-
+                    
                     <div className={cx('error__no-location', {
                         'error__no-location--visible': !this.state.searchCityNotFound
                     })}>
@@ -240,6 +240,9 @@ class App extends React.Component {
                     </div>
                     
                 </div>
+                <div className={cx('loader', {
+                    'loader-visible': this.state.loading
+                })}></div>
             </div>
         )
     }
