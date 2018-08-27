@@ -253,8 +253,8 @@ class App extends React.Component {
                     </div>
                     
                 </div>
-                <div className={cx('loader', {
-                    'loader-visible': this.state.loading
+                <div className={cx('o-loading o-loading--light o-loading--large', {
+                    'o-loading-visible': this.state.loading
                 })}></div>
             </div>
         )
