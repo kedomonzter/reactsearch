@@ -19,6 +19,7 @@ h1 {
 .weather__app {
     max-width: 100%;
     width: 992px;
+    min-height: 100vh;
     padding: 20px;
     margin: 0 auto;
 
@@ -197,3 +198,19 @@ h1 {
         opacity: .8;
     }
 }
+
+.error__no-location {
+    display: none;
+
+    &.error__no-location--visible {
+        margin-top: 100px;
+        display: block;
+        text-align: center;
+        font-size: 28px;
+        p {
+            margin-bottom: 10px;
+            margin-top: 10px
+        }
+    }
+}
+

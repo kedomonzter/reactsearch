@@ -12,7 +12,8 @@ class App extends React.Component {
             searchAutocompleteOpen: false,
             searchCityNotFound: false,
             heading: "",
-            template: 'less-twenty'
+            template: 'less-twenty',
+            loading: false
         }
         this.getUserLocation = this.getUserLocation.bind(this);
         this.getNewLocationSubmit = this.getNewLocationSubmit.bind(this);
@@ -31,12 +32,19 @@ class App extends React.Component {
         fetch("http://ipinfo.io/json")
             .then((response) =>  response.json())
             .then((response) => {
-                this.setState({ 
-                    location: response.city,  
-                    country: response.country,
-                    heading: response.city + ', ' + response.country
-                })
-                this.fetchLocation();
+                if(response.city) {
+                    this.setState({ 
+                        location: response.city,  
+                        country: response.country,
+                        heading: response.city + ', ' + response.country,
+                        searchCityNotFound: false
+                    })
+                    this.fetchLocation();
+                } else {
+                    this.setState({
+                        searchCityNotFound: true
+                    })
+                }
             })
             .catch((error) => console.log('error', error));
     }
@@ -44,12 +52,22 @@ class App extends React.Component {
     // Fetch weather details for a given location
     fetchLocation(){
         fetch(`/api/getweather/${this.state.location}/${this.state.country}`)
-            .then((response) =>  response.json())
             .then((response) =>  {
-                console.log('City weather', response);
                 this.setState({
-                    newLocation: response 
+                    loading: true
+                })
+                return response.json();
+            }
+            )
+            .then((response) =>  {
+                // console.log('City weather', response);
+                this.setState({
+                    newLocation: response,
+                    searchCityNotFound: false,
+                    loading: false
                 });
+
+                // Set template background depending on temperature
                 const temp = response.data[0].temp;
                 if (temp < 0) {
                     this.setState({
@@ -67,7 +85,7 @@ class App extends React.Component {
                     this.setState({
                         template:  'more-twenty'
                     });
-                }
+                };
             })
             .catch((error) => console.log('error', error));
     }
@@ -81,7 +99,8 @@ class App extends React.Component {
                     this.setState({
                         country: cityDetails.geobytesinternet,
                         heading: cityDetails.geobytescity + ', ' + cityDetails.geobytesinternet,
-                        location: cityDetails.geobytescity
+                        location: cityDetails.geobytescity,
+                        loading: true
                     })
                     this.fetchLocation();
                 })
@@ -96,8 +115,7 @@ class App extends React.Component {
                 .then(cities => {
                     if(cities.length === 1 && cities[0] === "") {
                         this.setState({ 
-                            'searchAutocomplete': [],
-                            'searchCityNotFound': true
+                            'searchAutocomplete': []
                         })
                     } else {
                         this.setState({ 
@@ -124,8 +142,8 @@ class App extends React.Component {
 
     
     render(){
-        var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         return (
             <div className={'weather__app ' + this.state.template}>
                 <div className='search'>
@@ -189,26 +207,39 @@ class App extends React.Component {
                         }
                     </div>
 
-                    <h2 className='weather__subheading'>Next 5 Days</h2>
-                    <div className='weather__next-days'>
-                        {this.state.newLocation === "" 
-                            // Return weather details for five days after today
-                            ? "" 
-                            : this.state.newLocation.data.map((day, index) => {
-                                return index > 0 && index < 6 
-                                    ?  <div key={index} className='weather__next-day'>
-                                            <div className=''>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
-                                            <img className='weather__next-day-image' 
-                                                src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
-                                                alt={day.weather.description}/>
-                                            <div className='weather__next-day-temp'>{day.max_temp}&#176;</div>
-                                        </div>
-                                : null
-                            })
-                        }
+                    
+                    <div className={cx('error__no-location', {
+                        'error__no-location--visible': this.state.searchCityNotFound
+                    })}>
+                        <p>Sorry, we can't find your location.</p>
+                        <p>Try using the search field.</p>
                     </div>
+                    
+
+                    <div className={cx('error__no-location', {
+                        'error__no-location--visible': !this.state.searchCityNotFound
+                    })}>
+                        <h2 className='weather__subheading'>Next 5 Days</h2>
+                        <div className='weather__next-days'>
+                            {this.state.newLocation === "" 
+                                // Return weather details for five days after today
+                                ? "" 
+                                : this.state.newLocation.data.map((day, index) => {
+                                    return index > 0 && index < 6 
+                                        ?  <div key={index} className='weather__next-day'>
+                                                <div className=''>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
+                                                <img className='weather__next-day-image' 
+                                                    src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
+                                                    alt={day.weather.description}/>
+                                                <div className='weather__next-day-temp'>{day.max_temp}&#176;</div>
+                                            </div>
+                                    : null
+                                })
+                            }
+                        </div>
+                    </div>
+                    
                 </div>
-                
             </div>
         )
     }
