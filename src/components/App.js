@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 
 class App extends React.Component {
     constructor(){
@@ -8,8 +9,10 @@ class App extends React.Component {
             location: "",
             country: "",
             searchAutocomplete: [],
+            searchAutocompleteOpen: false,
             searchCityNotFound: false,
-            heading: ""
+            heading: "",
+            template: 'less-twenty'
         }
         this.getUserLocation = this.getUserLocation.bind(this);
         this.getNewLocationSubmit = this.getNewLocationSubmit.bind(this);
@@ -46,37 +49,42 @@ class App extends React.Component {
                 console.log('City weather', response);
                 this.setState({
                     newLocation: response 
-                  });
-                })
+                });
+                const temp = response.data[0].temp;
+                if (temp < 0) {
+                    this.setState({
+                        template:  'negative'
+                    });
+                } else if (temp < 10){
+                    this.setState({
+                        template:  'less-ten'
+                    });
+                } else if (temp < 20) {
+                    this.setState({
+                        template:  'less-twenty'
+                    });
+                } else {
+                    this.setState({
+                        template:  'more-twenty'
+                    });
+                }
+            })
             .catch((error) => console.log('error', error));
     }
 
     // Get new location details (city name and country code)
     getNewLocationSubmit(event){
         event.preventDefault();
-        // document.querySelector('#search').addEventListener('keypress', (event) => {
-        //     let code = "";
-        //     code = event.key === "Enter" || event.keyCode || event.which;
-
-        // console.log('event.key', event.key)
-        // console.log('event.keyCode', event.keyCode)
-        // console.log('event.which', event.whichy)
-            
-        // });
-        // if(event.key === "Enter" || event.keyCode || event.which) {
-        //     return false;
-        // } else {
             fetch(`/api/details/${this.state.location}`)
                 .then(cityDetails => cityDetails.json())
                 .then(cityDetails => {
                     this.setState({
                         country: cityDetails.geobytesinternet,
-                        heading: cityDetails.geobytescity + ', ' + cityDetails.geobytescountry,
+                        heading: cityDetails.geobytescity + ', ' + cityDetails.geobytesinternet,
                         location: cityDetails.geobytescity
                     })
                     this.fetchLocation();
-                })   
-        // }
+                })
     }
 
     // Get search autocomplete cities list
@@ -92,7 +100,10 @@ class App extends React.Component {
                             'searchCityNotFound': true
                         })
                     } else {
-                        this.setState({ 'searchAutocomplete': cities})
+                        this.setState({ 
+                            'searchAutocomplete': cities,
+                            'searchAutocompleteOpen': true
+                        })
                     }
                 })
                 .catch(error => console.log('error', error))
@@ -105,26 +116,33 @@ class App extends React.Component {
     updateSearchField(event){
         document.querySelector('#search__field').value = event.target.textContent;
         this.setState({
-            location: event.target.textContent
+            location: event.target.textContent,
+            searchAutocompleteOpen: false
         });
     }
 
 
     
     render(){
+        var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         return (
-            <div>
-                <form onSubmit={(e) => e.preventDefault()} className="search" id="search">
-                    <label className="search__label" htmlFor="search__field">City</label>
-                    <input
-                        onChange={this.newLocationChangeHandler} 
-                        className="search__field" 
-                        id="search__field" 
-                        name="search__field" 
-                        placeholder="Enter city name"
-                        autoComplete="off" />
+            <div className={'weather__app ' + this.state.template}>
+                <div className='search'>
+                    <form onSubmit={(e) => e.preventDefault()} className="search__form" id="search__form">
+                        <input
+                            onChange={this.newLocationChangeHandler} 
+                            className="search__field" 
+                            id="search__field" 
+                            name="search__field" 
+                            placeholder="Enter city name"
+                            autoComplete="off" />
 
-                        <ul className="search__autocomplete" id="search__autocomplete">
+                        <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Search</button>
+                        <ul className={cx('search__autocomplete', {
+                                'search__autocomplete-open': this.state.searchAutocompleteOpen
+                            })} 
+                            id="search__autocomplete">
                             {
                                 this.state.searchAutocomplete.length > 0
                                     ? this.state.searchAutocomplete.map(elem => {
@@ -133,50 +151,63 @@ class App extends React.Component {
                                     :  ""
                             }
                         </ul>
-
-                    <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Go</button>
-                </form>
-
-                
-                
-                {this.state.newLocation === "" 
-                        ? "" 
-                        : <div className=''>
-                            <img src={`https://www.weatherbit.io/static/img/icons/${this.state.newLocation.data[0].weather.icon}.png`} className="" alt=""/>
-                            <div className=''><strong>{this.state.newLocation.data[0].temp}&#176;</strong></div>
-                            <h1>{this.state.heading}</h1>
-                            <div className=''><strong>{this.state.newLocation.data[0].valid_date}</strong></div>
-                            <div className=''><strong>{this.state.newLocation.data[0].weather.description}</strong></div>
-                        </div>
-                    }
-
-                {this.state.newLocation === "" 
-                    ? "" 
-                    : <div className=''>
-                        <div className=''>Wind speed <strong>{this.state.newLocation.data[0].wind_spd}m/s</strong></div>
-                        <div className=''>Wind direction <strong>{this.state.newLocation.data[0].wind_cdir_full}</strong></div>
-                        <div className=''>Max Temp <strong>{this.state.newLocation.data[0].max_temp}&#176;</strong></div>
-                        <div className=''>Min Temp <strong>{this.state.newLocation.data[0].min_temp}&#176;</strong></div>
-                        <div className=''>Clouds <strong>{this.state.newLocation.data[0].clouds}%</strong></div>
-                        <div className=''>Probability of Precipitation <strong>{this.state.newLocation.data[0].pop}%</strong></div>
-                        <div className=''>Average pressure <strong>{this.state.newLocation.data[0].pres}mb</strong></div>
-                        <div className=''>Average relative humidity <strong>{this.state.newLocation.data[0].rh}%</strong></div>
-                    </div>
-                }
-
-                {this.state.newLocation === "" 
-                    ? "" 
-                    : this.state.newLocation.data.map((day, index) => {
-                        return index > 0 && index < 6 
-                            ?  <div className=''>
-                                    <div className=''><strong>{day.valid_date}</strong></div>
-                                    <img src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} className="" alt=""/>
-                                    <div className=''>Max Temp <strong>{day.max_temp}&#176;</strong></div>
-                                    <div className=''>Min Temp <strong>{day.min_temp}&#176;</strong></div>
+                    </form>
+                </div>
+                <div className='weather'>
+                    {this.state.newLocation === "" 
+                        // Weather details for today header
+                            ? "" 
+                            : <div className='weather__header'>
+                                <div className='weather__header-temp'><strong>{this.state.newLocation.data[0].temp}</strong>&#176;</div>
+                                <div className='weather__header-desc'>{this.state.newLocation.data[0].weather.description}</div>
+                                <div className=''>
+                                {days[new Date(this.state.newLocation.data[0].valid_date).getDay()] + ", " + new Date(this.state.newLocation.data[0].valid_date).getDate() + " " + months[new Date(this.state.newLocation.data[0].valid_date).getMonth()]}
                                 </div>
-                        : null
-                    })
-                }
+                                <div className='weather__header-sub'>
+                                    <img className='weather__header-img' 
+                                        src={`https://www.weatherbit.io/static/img/icons/${this.state.newLocation.data[0].weather.icon}.png`} 
+                                        alt={this.state.newLocation.data[0].weather.description}/>
+                                    <h1 className='weather__header-heading'>{this.state.heading}</h1>
+                                </div>
+                            </div>
+                        }
+                    
+                    <div className='weather__more-info'>
+                        {this.state.newLocation === "" 
+                            // Weather details for today
+                            ? "" 
+                            : <div className='weather__details'>
+                                <div className='weather__details-item'>Wind speed <strong>{this.state.newLocation.data[0].wind_spd}m/s</strong></div>
+                                <div className='weather__details-item'>Wind direction <strong>{this.state.newLocation.data[0].wind_cdir_full}</strong></div>
+                                <div className='weather__details-item'>Max Temp <strong>{this.state.newLocation.data[0].max_temp}&#176;</strong></div>
+                                <div className='weather__details-item'>Min Temp <strong>{this.state.newLocation.data[0].min_temp}&#176;</strong></div>
+                                <div className='weather__details-item'>Clouds <strong>{this.state.newLocation.data[0].clouds}%</strong></div>
+                                <div className='weather__details-item'>Probability of Precipitation <strong>{this.state.newLocation.data[0].pop}%</strong></div>
+                                <div className='weather__details-item'>Average pressure <strong>{this.state.newLocation.data[0].pres}mb</strong></div>
+                                <div className='weather__details-item'>Average relative humidity <strong>{this.state.newLocation.data[0].rh}%</strong></div>
+                            </div>
+                        }
+                    </div>
+
+                    <h2 className='weather__subheading'>Next 5 Days</h2>
+                    <div className='weather__next-days'>
+                        {this.state.newLocation === "" 
+                            // Return weather details for five days after today
+                            ? "" 
+                            : this.state.newLocation.data.map((day, index) => {
+                                return index > 0 && index < 6 
+                                    ?  <div key={index} className='weather__next-day'>
+                                            <div className=''>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
+                                            <img className='weather__next-day-image' 
+                                                src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
+                                                alt={day.weather.description}/>
+                                            <div className='weather__next-day-temp'>{day.max_temp}&#176;</div>
+                                        </div>
+                                : null
+                            })
+                        }
+                    </div>
+                </div>
                 
             </div>
         )

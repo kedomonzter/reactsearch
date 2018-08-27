@@ -1,6 +1,199 @@
+* {
+    box-sizing: border-box;
+}
+
 html {
+    color: #fff;
     font-family: FinancierDisplayWeb, sans-serif;
 }
+
+html, body {
+    margin: 0;
+    background-color: gray;
+}
+
 h1 {
     font-family: MetricWeb, serif;
+}
+
+.weather__app {
+    max-width: 100%;
+    width: 992px;
+    padding: 20px;
+    margin: 0 auto;
+
+    .negative {
+        background: #0ac994; /* Old Browsers */
+        background: -webkit-linear-gradient(top,#0ac994,#5af0c3); /*Safari 5.1-6*/
+        background: -o-linear-gradient(top,#0ac994,#5af0c3); /*Opera 11.1-12*/
+        background: -moz-linear-gradient(top,#0ac994,#5af0c3); /*Fx 3.6-15*/
+        background: linear-gradient(to bottom, #0ac994, #5af0c3); /*Standard*/
+    }
+
+    .less-ten {
+        background: #1757fb; /* Old Browsers */
+        background: -webkit-linear-gradient(top,#1757fb,#527ded); /*Safari 5.1-6*/
+        background: -o-linear-gradient(top,#1757fb,#527ded); /*Opera 11.1-12*/
+        background: -moz-linear-gradient(top,#1757fb,#527ded); /*Fx 3.6-15*/
+        background: linear-gradient(to bottom, #1757fb, #527ded); /*Standard*/
+    }
+
+    &.less-twenty {
+        background: #622dfd; /* Old Browsers */
+        background: -webkit-linear-gradient(top,#622dfd,#c064de); /*Safari 5.1-6*/
+        background: -o-linear-gradient(top,#622dfd,#c064de); /*Opera 11.1-12*/
+        background: -moz-linear-gradient(top,#622dfd,#c064de); /*Fx 3.6-15*/
+        background: linear-gradient(to bottom, #622dfd, #c064de); /*Standard*/
+    }
+
+    &.more-twenty {
+        background: #ff7e05; /* Old Browsers */
+        background: -webkit-linear-gradient(top,#ff7e05,#ffca4e); /*Safari 5.1-6*/
+        background: -o-linear-gradient(top,#ff7e05,#ffca4e); /*Opera 11.1-12*/
+        background: -moz-linear-gradient(top,#ff7e05,#ffca4e); /*Fx 3.6-15*/
+        background: linear-gradient(to bottom, #ff7e05, #ffca4e); /*Standard*/
+    }
+}
+
+
+.weather__header{
+    font-family: MetricWeb, serif;
+    text-align: center;
+
+    .weather__header-temp {
+        text-align: center;
+        line-height: 160px;
+        margin: 40px 0px 0px;
+        font-size: 150px;
+        @media(min-width: 480px){
+            font-size: 170px;
+        }
+        @media(min-width: 640px){
+            font-size: 190px;
+        }
+    }
+    
+    .weather__header-sub{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        .weather__header-img{
+            width: 80px;
+        }
+    }
+
+    .weather__header-desc {
+        font-size: 30px;
+        margin: 20px 0px;
+    }
+}
+
+.weather__subheading {
+    padding-left: 0;
+    margin: 40px 0px;
+    opacity: 0.7;
+}
+
+.weather__next-days {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    
+    color: #333;
+    max-width: 110%;
+    background-color: rgba(255,255,255, .2);  
+    padding: 40px 20px;  
+    margin: -20px;
+
+
+    .weather__next-day {
+        font-family: MetricWeb, serif;    
+        text-align: center;
+        font-size: 12px;
+        position: relative;
+
+        .weather__next-day-image{
+            max-width: 100%;
+            width:70px;
+            margin-top: 10px;
+        }
+        .weather__next-day-temp{
+            font-size: 18px;
+        }
+    }
+}
+
+
+.weather__details {
+    padding: 20px 20px 0px;
+
+    @media(min-width: 992px){
+        max-width: 620px;
+        margin: 60px auto;
+    }
+    .weather__details-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 21px;
+    }
+}
+
+.search__form {
+    position: relative;
+
+    @media(min-width: 992px) {
+        position: relative;
+        width: 300px;
+        margin-bottom: 60px;
+    }
+}
+
+.search__field {
+    border-radius: 0px;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+}
+
+.search__autocomplete {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    color: gray;
+    display: none;
+
+    &.search__autocomplete-open {
+        display: block;
+    }
+    
+    > li {
+        background-color: #fff;
+        padding: 8px 5px;
+        border-bottom: 1px solid gray;
+
+        &:first-child {
+            border-top: 1px solid gray;
+        }
+
+        &:hover {
+            cursor: pointer;
+            opacity: .8;
+            color: #333;
+        }
+    }
+}
+
+.btn__search {
+    position: absolute;
+    right: 0px;
+    border: none;
+    padding: 10px;
+    background-color: gray;
+    color: #fff;
+
+    &:hover {
+        cursor: pointer;
+        opacity: .8;
+    }
 }
