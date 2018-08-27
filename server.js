@@ -6,8 +6,8 @@ app.set('view engine', 'hbs');
 app.use('/dist', express.static('dist'));
 
 // Fetch the weather details for the selected city
-app.get('/api/getweather/:location/:country', (req, res) => {
-    return fetch(`https://api.weatherbit.io/v2.0/forecast/daily?city=${req.params.location},${req.params.country}&key=401c2835a9eb4996a2c14d01fc33bddd`)
+app.get('/api/getweather/:latitude/:longitude', (req, res) => {
+    return fetch(`https://api.weatherbit.io/v2.0/forecast/daily?lat=${req.params.latitude}&lon=${req.params.longitude}&key=401c2835a9eb4996a2c14d01fc33bddd`)
         .then(response => response.json())
         .then((response) => {
             res.json(response);

@@ -32,12 +32,19 @@ class App extends React.Component {
         fetch("http://ipinfo.io/json")
             .then((response) =>  response.json())
             .then((response) => {
-                if(response.city) {
-                    this.setState({ 
+                if(response.loc) {
+                    const coord = response.loc.split(',');
+                    const lat = coord[0];
+                    const lon = coord[1];
+
+                    this.setState({
+                        latitude: lat,
+                        longitude: lon, 
                         location: response.city,  
                         country: response.country,
                         heading: response.city + ', ' + response.country,
-                        searchCityNotFound: false
+                        searchCityNotFound: false,
+                        loading: true
                     })
                     this.fetchLocation();
                 } else {
@@ -51,7 +58,7 @@ class App extends React.Component {
 
     // Fetch weather details for a given location
     fetchLocation(){
-        fetch(`/api/getweather/${this.state.location}/${this.state.country}`)
+        fetch(`/api/getweather/${this.state.latitude}/${this.state.longitude}`)
             .then((response) =>  {
                 this.setState({
                     loading: true
@@ -68,16 +75,16 @@ class App extends React.Component {
                 });
 
                 // Set template background depending on temperature
-                const temp = response.data[0].temp;
-                if (temp < 0) {
+                const temperature = response.data[0].temp;
+                if (temperature < 0) {
                     this.setState({
                         template:  'negative'
                     });
-                } else if (temp < 10){
+                } else if (temperature < 10){
                     this.setState({
                         template:  'less-ten'
                     });
-                } else if (temp < 20) {
+                } else if (temperature < 20) {
                     this.setState({
                         template:  'less-twenty'
                     });
@@ -97,6 +104,8 @@ class App extends React.Component {
                 .then(cityDetails => cityDetails.json())
                 .then(cityDetails => {
                     this.setState({
+                        latitude: cityDetails.geobyteslatitude,
+                        longitude: cityDetails.geobyteslongitude,
                         country: cityDetails.geobytesinternet,
                         heading: cityDetails.geobytescity + ', ' + cityDetails.geobytesinternet,
                         location: cityDetails.geobytescity,
@@ -156,7 +165,7 @@ class App extends React.Component {
                             placeholder="Enter city name"
                             autoComplete="off" />
 
-                        <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Search</button>
+                        <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Get Forecast</button>
                         <ul className={cx('search__autocomplete', {
                                 'search__autocomplete-open': this.state.searchAutocompleteOpen
                             })} 
@@ -212,31 +221,35 @@ class App extends React.Component {
                         'error__no-location--visible': this.state.searchCityNotFound
                     })}>
                         <p>Sorry, we can't find your location.</p>
-                        <p>Try using the search field.</p>
+                        <p>Try using the search.</p>
                     </div>
                     
                     
                     <div className={cx('error__no-location', {
                         'error__no-location--visible': !this.state.searchCityNotFound
                     })}>
-                        <h2 className='weather__subheading'>Next 5 Days</h2>
-                        <div className='weather__next-days'>
+                        
                             {this.state.newLocation === "" 
                                 // Return weather details for five days after today
                                 ? "" 
-                                : this.state.newLocation.data.map((day, index) => {
-                                    return index > 0 && index < 6 
-                                        ?  <div key={index} className='weather__next-day'>
-                                                <div className=''>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
-                                                <img className='weather__next-day-image' 
-                                                    src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
-                                                    alt={day.weather.description}/>
-                                                <div className='weather__next-day-temp'>{day.max_temp}&#176;</div>
-                                            </div>
-                                    : null
-                                })
+                                :   <div>
+                                        <h2 className='weather__subheading'>Next 5 Days</h2>
+                                        <div className='weather__next-days'>
+                                        {this.state.newLocation.data.map((day, index) => {
+                                            return index > 0 && index < 6 
+                                                ?  <div key={index} className='weather__next-day'>
+                                                        <div className=''>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
+                                                        <img className='weather__next-day-image' 
+                                                            src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
+                                                            alt={day.weather.description}/>
+                                                        <div className='weather__next-day-temp'>{day.max_temp}&#176;</div>
+                                                    </div>
+                                            : null
+                                        })}
+                                        </div>
+                                </div>
                             }
-                        </div>
+                        
                     </div>
                     
                 </div>
