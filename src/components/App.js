@@ -156,16 +156,18 @@ class App extends React.Component {
         return (
             <div className={'weather__app ' + this.state.template}>
                 <div className='search'>
-                    <form onSubmit={(e) => e.preventDefault()} className="search__form" id="search__form">
+                    <form  role="search" onSubmit={(e) => e.preventDefault()} className="search__form" id="search__form">
+                    <label style={{display:'none'}} htmlFor="search__field">Get forecast</label>
                         <input
                             onChange={this.newLocationChangeHandler} 
                             className="search__field" 
                             id="search__field" 
                             name="search__field" 
                             placeholder="Enter city name"
-                            autoComplete="off" />
+                            autoComplete="off"
+                            aria-label="Introduce the city you want the forecast for." />
 
-                        <button onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Get Forecast</button>
+                        <button aria-label="Get forecast of the given" onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Get Forecast</button>
                         <ul className={cx('search__autocomplete', {
                                 'search__autocomplete-open': this.state.searchAutocompleteOpen
                             })} 
@@ -187,7 +189,7 @@ class App extends React.Component {
                             : <div className='weather__header'>
                                 <div className='weather__header-temp'><strong>{this.state.newLocation.data[0].temp}</strong>&#176;</div>
                                 <div className='weather__header-desc'>{this.state.newLocation.data[0].weather.description}</div>
-                                <div className=''>
+                                <div>
                                 {days[new Date(this.state.newLocation.data[0].valid_date).getDay()] + ", " + new Date(this.state.newLocation.data[0].valid_date).getDate() + " " + months[new Date(this.state.newLocation.data[0].valid_date).getMonth()]}
                                 </div>
                                 <div className='weather__header-sub'>
@@ -238,7 +240,7 @@ class App extends React.Component {
                                         {this.state.newLocation.data.map((day, index) => {
                                             return index > 0 && index < 6 
                                                 ?  <div key={index} className='weather__next-day'>
-                                                        <div className=''>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
+                                                        <div>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
                                                         <img className='weather__next-day-image' 
                                                             src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
                                                             alt={day.weather.description}/>
