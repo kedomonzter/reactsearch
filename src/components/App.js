@@ -87,6 +87,7 @@ class App extends React.Component {
                     loading: false
                 });
                 const storedData = JSON.stringify(response);
+                console.log('storedData', storedData)
                 this.setCookie('storedForecast', storedData,7);
                 // localStorage.setItem('storedForecast', JSON.stringify(response));
 
@@ -188,8 +189,30 @@ class App extends React.Component {
         return "";
     }
     
+    setCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+        alert("Cookie : " + document.cookie);
+    }
+    
+    
+    getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+    
     render(){
-        console.log('this.state.newLocation', this.state.newLocation);
         const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
         const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         return (
