@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchForm from './SearchForm';
+import Weather from './Weather';
 import WeatherDetails from './WeatherDetails';
 import cx from 'classnames';
 
@@ -15,7 +16,9 @@ class App extends React.Component {
             searchCityNotFound: false,
             heading: "",
             template: 'less-twenty',
-            loading: false
+            loading: false,
+            days: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+            months: ['January','February','March','April','May','June','July','August','September','October','November','December']
         }
         this.getUserLocation = this.getUserLocation.bind(this);
         this.getNewLocationSubmit = this.getNewLocationSubmit.bind(this);
@@ -162,8 +165,6 @@ class App extends React.Component {
     }
     
     render(){
-        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         return (
             <div className={'weather__app ' + this.state.template}>
                 
@@ -175,25 +176,15 @@ class App extends React.Component {
                     searchAutocompleteOpen={this.state.searchAutocompleteOpen}/>
 
                 <div className='weather'>
-                    {this.state.newLocation === "" 
-                        // Weather details for today header
-                            ? "" 
-                            : <div className='weather__header'>
-                                <div className='weather__header-temp'><strong>{this.state.newLocation.data[0].temp}</strong>&#176;</div>
-                                <div className='weather__header-desc'>{this.state.newLocation.data[0].weather.description}</div>
-                                <div>
-                                {days[new Date(this.state.newLocation.data[0].valid_date).getDay()] + ", " + new Date(this.state.newLocation.data[0].valid_date).getDate() + " " + months[new Date(this.state.newLocation.data[0].valid_date).getMonth()]}
-                                </div>
-                                <div className='weather__header-sub'>
-                                    <img className='weather__header-img' 
-                                        src={`https://www.weatherbit.io/static/img/icons/${this.state.newLocation.data[0].weather.icon}.png`} 
-                                        alt={this.state.newLocation.data[0].weather.description}/>
-                                    <h1 className='weather__header-heading'>{this.state.heading}</h1>
-                                </div>
-                            </div>
-                        }
                     
-                    <WeatherDetails newLocation={this.state.newLocation}/>
+                    <Weather 
+                        newLocation={this.state.newLocation} 
+                        heading={this.state.heading}
+                        days={this.state.days} 
+                        months={this.state.months}/>
+                    
+                    <WeatherDetails 
+                        newLocation={this.state.newLocation}/>
 
                     
                     <div className={cx('error__no-location', {
@@ -217,7 +208,7 @@ class App extends React.Component {
                                         {this.state.newLocation.data.map((day, index) => {
                                             return index > 0 && index < 6 
                                                 ?  <div key={index} className='weather__next-day'>
-                                                        <div>{months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
+                                                        <div>{this.state.months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
                                                         <img className='weather__next-day-image' 
                                                             src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
                                                             alt={day.weather.description}/>

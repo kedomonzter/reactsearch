@@ -20700,6 +20700,10 @@ var _SearchForm = __webpack_require__(/*! ./SearchForm */ "./src/components/Sear
 
 var _SearchForm2 = _interopRequireDefault(_SearchForm);
 
+var _Weather = __webpack_require__(/*! ./Weather */ "./src/components/Weather.js");
+
+var _Weather2 = _interopRequireDefault(_Weather);
+
 var _WeatherDetails = __webpack_require__(/*! ./WeatherDetails */ "./src/components/WeatherDetails.js");
 
 var _WeatherDetails2 = _interopRequireDefault(_WeatherDetails);
@@ -20733,7 +20737,9 @@ var App = function (_React$Component) {
             searchCityNotFound: false,
             heading: "",
             template: 'less-twenty',
-            loading: false
+            loading: false,
+            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         };
         _this.getUserLocation = _this.getUserLocation.bind(_this);
         _this.getNewLocationSubmit = _this.getNewLocationSubmit.bind(_this);
@@ -20904,8 +20910,8 @@ var App = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            var _this6 = this;
+
             return _react2.default.createElement(
                 'div',
                 { className: 'weather__app ' + this.state.template },
@@ -20918,45 +20924,13 @@ var App = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'weather' },
-                    this.state.newLocation === ""
-                    // Weather details for today header
-                    ? "" : _react2.default.createElement(
-                        'div',
-                        { className: 'weather__header' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'weather__header-temp' },
-                            _react2.default.createElement(
-                                'strong',
-                                null,
-                                this.state.newLocation.data[0].temp
-                            ),
-                            '\xB0'
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'weather__header-desc' },
-                            this.state.newLocation.data[0].weather.description
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            days[new Date(this.state.newLocation.data[0].valid_date).getDay()] + ", " + new Date(this.state.newLocation.data[0].valid_date).getDate() + " " + months[new Date(this.state.newLocation.data[0].valid_date).getMonth()]
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'weather__header-sub' },
-                            _react2.default.createElement('img', { className: 'weather__header-img',
-                                src: 'https://www.weatherbit.io/static/img/icons/' + this.state.newLocation.data[0].weather.icon + '.png',
-                                alt: this.state.newLocation.data[0].weather.description }),
-                            _react2.default.createElement(
-                                'h1',
-                                { className: 'weather__header-heading' },
-                                this.state.heading
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(_WeatherDetails2.default, { newLocation: this.state.newLocation }),
+                    _react2.default.createElement(_Weather2.default, {
+                        newLocation: this.state.newLocation,
+                        heading: this.state.heading,
+                        days: this.state.days,
+                        months: this.state.months }),
+                    _react2.default.createElement(_WeatherDetails2.default, {
+                        newLocation: this.state.newLocation }),
                     _react2.default.createElement(
                         'div',
                         { className: (0, _classnames2.default)('error__no-location', {
@@ -20998,7 +20972,7 @@ var App = function (_React$Component) {
                                         _react2.default.createElement(
                                             'div',
                                             null,
-                                            months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()
+                                            _this6.state.months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()
                                         ),
                                         _react2.default.createElement('img', { className: 'weather__next-day-image',
                                             src: 'https://www.weatherbit.io/static/img/icons/' + day.weather.icon + '.png',
@@ -21106,6 +21080,79 @@ function SearchForm(_ref) {
     );
 }
 exports.default = SearchForm;
+
+/***/ }),
+
+/***/ "./src/components/Weather.js":
+/*!***********************************!*\
+  !*** ./src/components/Weather.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Weather(_ref) {
+    var newLocation = _ref.newLocation,
+        heading = _ref.heading,
+        days = _ref.days,
+        months = _ref.months;
+
+    return _react2.default.createElement(
+        "div",
+        null,
+        newLocation === ""
+        // Weather details for today header
+        ? "" : _react2.default.createElement(
+            "div",
+            { className: "weather__header" },
+            _react2.default.createElement(
+                "div",
+                { className: "weather__header-temp" },
+                _react2.default.createElement(
+                    "strong",
+                    null,
+                    newLocation.data[0].temp
+                ),
+                "\xB0"
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "weather__header-desc" },
+                newLocation.data[0].weather.description
+            ),
+            _react2.default.createElement(
+                "div",
+                null,
+                days[new Date(newLocation.data[0].valid_date).getDay()] + ", " + new Date(newLocation.data[0].valid_date).getDate() + " " + months[new Date(newLocation.data[0].valid_date).getMonth()]
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "weather__header-sub" },
+                _react2.default.createElement("img", { className: "weather__header-img",
+                    src: "https://www.weatherbit.io/static/img/icons/" + newLocation.data[0].weather.icon + ".png",
+                    alt: newLocation.data[0].weather.description }),
+                _react2.default.createElement(
+                    "h1",
+                    { className: "weather__header-heading" },
+                    heading
+                )
+            )
+        )
+    );
+}
+exports.default = Weather;
 
 /***/ }),
 
