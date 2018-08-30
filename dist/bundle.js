@@ -20700,6 +20700,10 @@ var _SearchForm = __webpack_require__(/*! ./SearchForm */ "./src/components/Sear
 
 var _SearchForm2 = _interopRequireDefault(_SearchForm);
 
+var _WeatherDetails = __webpack_require__(/*! ./WeatherDetails */ "./src/components/WeatherDetails.js");
+
+var _WeatherDetails2 = _interopRequireDefault(_WeatherDetails);
+
 var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -20952,103 +20956,7 @@ var App = function (_React$Component) {
                             )
                         )
                     ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'weather__more-info' },
-                        this.state.newLocation === ""
-                        // Weather details for today
-                        ? "" : _react2.default.createElement(
-                            'div',
-                            { className: 'weather__details' },
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Wind speed ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].wind_spd,
-                                    'm/s'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Wind direction ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].wind_cdir_full
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Max Temp ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].max_temp,
-                                    '\xB0'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Min Temp ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].min_temp,
-                                    '\xB0'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Clouds ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].clouds,
-                                    '%'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Probability of Precipitation ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].pop,
-                                    '%'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Average pressure ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].pres,
-                                    'mb'
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__details-item' },
-                                'Average relative humidity ',
-                                _react2.default.createElement(
-                                    'strong',
-                                    null,
-                                    this.state.newLocation.data[0].rh,
-                                    '%'
-                                )
-                            )
-                        )
-                    ),
+                    _react2.default.createElement(_WeatherDetails2.default, { newLocation: this.state.newLocation }),
                     _react2.default.createElement(
                         'div',
                         { className: (0, _classnames2.default)('error__no-location', {
@@ -21198,6 +21106,131 @@ function SearchForm(_ref) {
     );
 }
 exports.default = SearchForm;
+
+/***/ }),
+
+/***/ "./src/components/WeatherDetails.js":
+/*!******************************************!*\
+  !*** ./src/components/WeatherDetails.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function WeatherDetails(_ref) {
+    var newLocation = _ref.newLocation;
+
+    return _react2.default.createElement(
+        'div',
+        { className: 'weather__more-info' },
+        newLocation === ""
+        // Weather details for current day
+        ? "" : _react2.default.createElement(
+            'div',
+            { className: 'weather__details' },
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Wind speed ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].wind_spd,
+                    'm/s'
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Wind direction ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].wind_cdir_full
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Max Temp ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].max_temp,
+                    '\xB0'
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Min Temp ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].min_temp,
+                    '\xB0'
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Clouds ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].clouds,
+                    '%'
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Probability of Precipitation ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].pop,
+                    '%'
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Average pressure ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].pres,
+                    'mb'
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'weather__details-item' },
+                'Average relative humidity ',
+                _react2.default.createElement(
+                    'strong',
+                    null,
+                    newLocation.data[0].rh,
+                    '%'
+                )
+            )
+        )
+    );
+}
+exports.default = WeatherDetails;
 
 /***/ }),
 

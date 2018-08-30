@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchForm from './SearchForm';
+import WeatherDetails from './WeatherDetails';
 import cx from 'classnames';
 
 class App extends React.Component {
@@ -192,22 +193,7 @@ class App extends React.Component {
                             </div>
                         }
                     
-                    <div className='weather__more-info'>
-                        {this.state.newLocation === "" 
-                            // Weather details for today
-                            ? "" 
-                            : <div className='weather__details'>
-                                <div className='weather__details-item'>Wind speed <strong>{this.state.newLocation.data[0].wind_spd}m/s</strong></div>
-                                <div className='weather__details-item'>Wind direction <strong>{this.state.newLocation.data[0].wind_cdir_full}</strong></div>
-                                <div className='weather__details-item'>Max Temp <strong>{this.state.newLocation.data[0].max_temp}&#176;</strong></div>
-                                <div className='weather__details-item'>Min Temp <strong>{this.state.newLocation.data[0].min_temp}&#176;</strong></div>
-                                <div className='weather__details-item'>Clouds <strong>{this.state.newLocation.data[0].clouds}%</strong></div>
-                                <div className='weather__details-item'>Probability of Precipitation <strong>{this.state.newLocation.data[0].pop}%</strong></div>
-                                <div className='weather__details-item'>Average pressure <strong>{this.state.newLocation.data[0].pres}mb</strong></div>
-                                <div className='weather__details-item'>Average relative humidity <strong>{this.state.newLocation.data[0].rh}%</strong></div>
-                            </div>
-                        }
-                    </div>
+                    <WeatherDetails newLocation={this.state.newLocation}/>
 
                     
                     <div className={cx('error__no-location', {
