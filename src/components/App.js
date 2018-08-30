@@ -57,8 +57,7 @@ class App extends React.Component {
                 })
             .catch((error) => {
                 // If error fetching forecast use instead the latest one fetched
-                // const storedForecast = JSON.parse(localStorage.getItem("storedForecast"));
-                var storedForecast = this.getCookie('storedForecast');
+                const storedForecast = JSON.parse(localStorage.getItem("storedForecast"));
                 if (storedForecast) {
                     this.setState({
                         newLocation: storedForecast, 
@@ -86,9 +85,7 @@ class App extends React.Component {
                     searchCityNotFound: false,
                     loading: false
                 });
-                const storedData = JSON.stringify(response);
-                this.setCookie('storedForecast', storedData,7);
-                // localStorage.setItem('storedForecast', JSON.stringify(response));
+                localStorage.setItem('storedForecast', JSON.stringify(response));
 
                 // Set template background depending on temperature
                 const temperature = response.data[0].temp;
