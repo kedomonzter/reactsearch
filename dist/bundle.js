@@ -20696,6 +20696,10 @@ var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _SearchForm = __webpack_require__(/*! ./SearchForm */ "./src/components/SearchForm.js");
+
+var _SearchForm2 = _interopRequireDefault(_SearchForm);
+
 var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -20896,57 +20900,17 @@ var App = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this6 = this;
-
             var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             return _react2.default.createElement(
                 'div',
                 { className: 'weather__app ' + this.state.template },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'search' },
-                    _react2.default.createElement(
-                        'form',
-                        { role: 'search', onSubmit: function onSubmit(e) {
-                                return e.preventDefault();
-                            }, className: 'search__form', id: 'search__form' },
-                        _react2.default.createElement(
-                            'label',
-                            { style: { display: 'none' }, htmlFor: 'search__field' },
-                            'Get forecast'
-                        ),
-                        _react2.default.createElement('input', {
-                            onChange: this.newLocationChangeHandler,
-                            className: 'search__field',
-                            id: 'search__field',
-                            name: 'search__field',
-                            placeholder: 'Enter city name',
-                            autoComplete: 'off',
-                            'aria-label': 'Introduce the city you want the forecast for.' }),
-                        _react2.default.createElement(
-                            'button',
-                            { 'aria-label': 'Get forecast of the given', onClick: function onClick(e) {
-                                    return _this6.getNewLocationSubmit(e);
-                                }, type: 'button', className: 'btn btn__search' },
-                            'Get Forecast'
-                        ),
-                        _react2.default.createElement(
-                            'ul',
-                            { className: (0, _classnames2.default)('search__autocomplete', {
-                                    'search__autocomplete-open': this.state.searchAutocompleteOpen
-                                }),
-                                id: 'search__autocomplete' },
-                            this.state.searchAutocomplete.length > 0 ? this.state.searchAutocomplete.map(function (elem) {
-                                return _react2.default.createElement(
-                                    'li',
-                                    { onClick: _this6.updateSearchField, key: elem },
-                                    elem
-                                );
-                            }) : ""
-                        )
-                    )
-                ),
+                _react2.default.createElement(_SearchForm2.default, {
+                    newLocationChangeHandler: this.newLocationChangeHandler,
+                    getNewLocationSubmit: this.getNewLocationSubmit,
+                    updateSearchField: this.updateSearchField,
+                    searchAutocomplete: this.state.searchAutocomplete,
+                    searchAutocompleteOpen: this.state.searchAutocompleteOpen }),
                 _react2.default.createElement(
                     'div',
                     { className: 'weather' },
@@ -21154,6 +21118,86 @@ var App = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = App;
+
+/***/ }),
+
+/***/ "./src/components/SearchForm.js":
+/*!**************************************!*\
+  !*** ./src/components/SearchForm.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function SearchForm(_ref) {
+    var newLocationChangeHandler = _ref.newLocationChangeHandler,
+        updateSearchField = _ref.updateSearchField,
+        getNewLocationSubmit = _ref.getNewLocationSubmit,
+        searchAutocomplete = _ref.searchAutocomplete,
+        searchAutocompleteOpen = _ref.searchAutocompleteOpen;
+
+    return _react2.default.createElement(
+        'div',
+        { className: 'search' },
+        _react2.default.createElement(
+            'form',
+            { role: 'search', onSubmit: function onSubmit(e) {
+                    return e.preventDefault();
+                }, className: 'search__form', id: 'search__form' },
+            _react2.default.createElement(
+                'label',
+                { style: { display: 'none' }, htmlFor: 'search__field' },
+                'Get forecast'
+            ),
+            _react2.default.createElement('input', {
+                onChange: newLocationChangeHandler,
+                className: 'search__field',
+                id: 'search__field',
+                name: 'search__field',
+                placeholder: 'Enter city name',
+                autoComplete: 'off',
+                'aria-label': 'Introduce the city you want the forecast for.' }),
+            _react2.default.createElement(
+                'button',
+                { 'aria-label': 'Get forecast of the given', onClick: function onClick(e) {
+                        return getNewLocationSubmit(e);
+                    }, type: 'button', className: 'btn btn__search' },
+                'Get Forecast'
+            ),
+            _react2.default.createElement(
+                'ul',
+                { className: (0, _classnames2.default)('search__autocomplete', {
+                        'search__autocomplete-open': searchAutocompleteOpen
+                    }),
+                    id: 'search__autocomplete' },
+                searchAutocomplete.length > 0 ? searchAutocomplete.map(function (elem) {
+                    return _react2.default.createElement(
+                        'li',
+                        { onClick: updateSearchField, key: elem },
+                        elem
+                    );
+                }) : ""
+            )
+        )
+    );
+}
+exports.default = SearchForm;
 
 /***/ }),
 

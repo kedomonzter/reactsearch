@@ -1,4 +1,5 @@
 import React from 'react';
+import SearchForm from './SearchForm';
 import cx from 'classnames';
 
 class App extends React.Component {
@@ -164,33 +165,14 @@ class App extends React.Component {
         const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
         return (
             <div className={'weather__app ' + this.state.template}>
-                <div className='search'>
-                    <form  role="search" onSubmit={(e) => e.preventDefault()} className="search__form" id="search__form">
-                        <label style={{display:'none'}} htmlFor="search__field">Get forecast</label>
-                        <input
-                            onChange={this.newLocationChangeHandler} 
-                            className="search__field" 
-                            id="search__field" 
-                            name="search__field" 
-                            placeholder="Enter city name"
-                            autoComplete="off"
-                            aria-label="Introduce the city you want the forecast for." />
+                
+                <SearchForm 
+                    newLocationChangeHandler={this.newLocationChangeHandler} 
+                    getNewLocationSubmit={this.getNewLocationSubmit}
+                    updateSearchField={this.updateSearchField}
+                    searchAutocomplete={this.state.searchAutocomplete}
+                    searchAutocompleteOpen={this.state.searchAutocompleteOpen}/>
 
-                        <button aria-label="Get forecast of the given" onClick={(e) => this.getNewLocationSubmit(e)} type="button" className="btn btn__search">Get Forecast</button>
-                        <ul className={cx('search__autocomplete', {
-                                'search__autocomplete-open': this.state.searchAutocompleteOpen
-                            })} 
-                            id="search__autocomplete">
-                            {
-                                this.state.searchAutocomplete.length > 0
-                                    ? this.state.searchAutocomplete.map(elem => {
-                                        return <li onClick={this.updateSearchField} key={elem}>{elem}</li>
-                                    })
-                                    :  ""
-                            }
-                        </ul>
-                    </form>
-                </div>
                 <div className='weather'>
                     {this.state.newLocation === "" 
                         // Weather details for today header
