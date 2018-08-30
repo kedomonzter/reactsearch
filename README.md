@@ -1,12 +1,13 @@
-#FT Weather App
+## FT Weather App
 
-Website app that shows the real-time weather for your current location and for a location of your choice.
+Web App that shows the real-time weather for your current location and for a location of your choice.
 
 ## Instructions
 
-* Clone this repo. Run `npm install` to get all dependencies.
-* Run `npm run nodemon` to get node server running.
-* Open localhost:8080 in your browser.
+* Clone this repo. 
+* Run `npm install` to get all dependencies.
+* Run `npm run start` to get node server running.
+* Open http://localhost:8080 in your browser.
 * Alternatively, you can find a working version of the app running at http://ft-weather.herokuapp.com.
 
 ## Features
