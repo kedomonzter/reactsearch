@@ -20,8 +20,6 @@ class App extends React.Component {
         this.fetchLocation = this.fetchLocation.bind(this);
         this.newLocationChangeHandler = this.newLocationChangeHandler.bind(this);
         this.updateSearchField = this.updateSearchField.bind(this);
-        this.setCookie = this.setCookie.bind(this);
-        this.getCookie = this.getCookie.bind(this);
     }
 
     componentDidMount(){
@@ -159,53 +157,6 @@ class App extends React.Component {
             location: event.target.textContent,
             searchAutocompleteOpen: false
         });
-    }
-
-    // Cookies management
-    setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-    
-    setCookie(name,value,days) {
-        var expires = "";
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-        alert("Cookie : " + document.cookie);
-    }
-    
-    
-    getCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
-        for(var i=0;i < ca.length;i++) {
-            var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1,c.length);
-            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-        }
-        return null;
     }
     
     render(){

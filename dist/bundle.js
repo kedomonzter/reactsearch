@@ -20732,8 +20732,6 @@ var App = function (_React$Component) {
         _this.fetchLocation = _this.fetchLocation.bind(_this);
         _this.newLocationChangeHandler = _this.newLocationChangeHandler.bind(_this);
         _this.updateSearchField = _this.updateSearchField.bind(_this);
-        _this.setCookie = _this.setCookie.bind(_this);
-        _this.getCookie = _this.getCookie.bind(_this);
         return _this;
     }
 
@@ -20894,59 +20892,6 @@ var App = function (_React$Component) {
                 location: event.target.textContent,
                 searchAutocompleteOpen: false
             });
-        }
-
-        // Cookies management
-
-    }, {
-        key: 'setCookie',
-        value: function setCookie(cname, cvalue, exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
-            var expires = "expires=" + d.toUTCString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-    }, {
-        key: 'getCookie',
-        value: function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-    }, {
-        key: 'setCookie',
-        value: function setCookie(name, value, days) {
-            var expires = "";
-            if (days) {
-                var date = new Date();
-                date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/";
-            alert("Cookie : " + document.cookie);
-        }
-    }, {
-        key: 'getCookie',
-        value: function getCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1, c.length);
-                }if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
         }
     }, {
         key: 'render',
