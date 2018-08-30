@@ -20708,6 +20708,10 @@ var _WeatherDetails = __webpack_require__(/*! ./WeatherDetails */ "./src/compone
 
 var _WeatherDetails2 = _interopRequireDefault(_WeatherDetails);
 
+var _NextDaysWeather = __webpack_require__(/*! ./NextDaysWeather */ "./src/components/NextDaysWeather.js");
+
+var _NextDaysWeather2 = _interopRequireDefault(_NextDaysWeather);
+
 var _classnames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
 var _classnames2 = _interopRequireDefault(_classnames);
@@ -20910,8 +20914,6 @@ var App = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this6 = this;
-
             return _react2.default.createElement(
                 'div',
                 { className: 'weather__app ' + this.state.template },
@@ -20933,9 +20935,7 @@ var App = function (_React$Component) {
                         newLocation: this.state.newLocation }),
                     _react2.default.createElement(
                         'div',
-                        { className: (0, _classnames2.default)('error__no-location', {
-                                'error__no-location--visible': this.state.searchCityNotFound
-                            }) },
+                        { className: (0, _classnames2.default)('error__no-location', { 'error__no-location--visible': this.state.searchCityNotFound }) },
                         _react2.default.createElement(
                             'p',
                             null,
@@ -20949,44 +20949,10 @@ var App = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: (0, _classnames2.default)('error__no-location', {
-                                'error__no-location--visible': !this.state.searchCityNotFound
-                            }) },
-                        this.state.newLocation === ""
-                        // Return weather details for five days after today
-                        ? "" : _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                'h2',
-                                { className: 'weather__subheading' },
-                                'Next 5 Days'
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'weather__next-days' },
-                                this.state.newLocation.data.map(function (day, index) {
-                                    return index > 0 && index < 6 ? _react2.default.createElement(
-                                        'div',
-                                        { key: index, className: 'weather__next-day' },
-                                        _react2.default.createElement(
-                                            'div',
-                                            null,
-                                            _this6.state.months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()
-                                        ),
-                                        _react2.default.createElement('img', { className: 'weather__next-day-image',
-                                            src: 'https://www.weatherbit.io/static/img/icons/' + day.weather.icon + '.png',
-                                            alt: day.weather.description }),
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'weather__next-day-temp' },
-                                            day.max_temp,
-                                            '\xB0'
-                                        )
-                                    ) : null;
-                                })
-                            )
-                        )
+                        { className: (0, _classnames2.default)('error__no-location', { 'error__no-location--visible': !this.state.searchCityNotFound }) },
+                        _react2.default.createElement(_NextDaysWeather2.default, {
+                            newLocation: this.state.newLocation,
+                            months: this.state.months })
                     )
                 ),
                 _react2.default.createElement('div', { className: (0, _classnames2.default)('o-loading o-loading--light o-loading--large', {
@@ -21000,6 +20966,74 @@ var App = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = App;
+
+/***/ }),
+
+/***/ "./src/components/NextDaysWeather.js":
+/*!*******************************************!*\
+  !*** ./src/components/NextDaysWeather.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function NextDaysWeather(_ref) {
+    var newLocation = _ref.newLocation,
+        months = _ref.months;
+
+    return _react2.default.createElement(
+        "div",
+        null,
+        newLocation === ""
+        // Return weather details for five days after today
+        ? "" : _react2.default.createElement(
+            "div",
+            null,
+            _react2.default.createElement(
+                "h2",
+                { className: "weather__subheading" },
+                "Next 5 Days"
+            ),
+            _react2.default.createElement(
+                "div",
+                { className: "weather__next-days" },
+                newLocation.data.map(function (day, index) {
+                    return index > 0 && index < 6 ? _react2.default.createElement(
+                        "div",
+                        { key: index, className: "weather__next-day" },
+                        _react2.default.createElement(
+                            "div",
+                            null,
+                            months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()
+                        ),
+                        _react2.default.createElement("img", { className: "weather__next-day-image",
+                            src: "https://www.weatherbit.io/static/img/icons/" + day.weather.icon + ".png",
+                            alt: day.weather.description }),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "weather__next-day-temp" },
+                            day.max_temp,
+                            "\xB0"
+                        )
+                    ) : null;
+                })
+            )
+        )
+    );
+}
+exports.default = NextDaysWeather;
 
 /***/ }),
 

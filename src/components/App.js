@@ -2,6 +2,7 @@ import React from 'react';
 import SearchForm from './SearchForm';
 import Weather from './Weather';
 import WeatherDetails from './WeatherDetails';
+import NextDaysWeather from './NextDaysWeather';
 import cx from 'classnames';
 
 class App extends React.Component {
@@ -187,39 +188,16 @@ class App extends React.Component {
                         newLocation={this.state.newLocation}/>
 
                     
-                    <div className={cx('error__no-location', {
-                        'error__no-location--visible': this.state.searchCityNotFound
-                    })}>
+                    <div className={cx('error__no-location', { 'error__no-location--visible': this.state.searchCityNotFound })}>
                         <p>Sorry, we can't find your location.</p>
                         <p>Try using the search.</p>
                     </div>
                     
                     
-                    <div className={cx('error__no-location', {
-                        'error__no-location--visible': !this.state.searchCityNotFound
-                    })}>
-                        
-                            {this.state.newLocation === "" 
-                                // Return weather details for five days after today
-                                ? "" 
-                                :   <div>
-                                        <h2 className='weather__subheading'>Next 5 Days</h2>
-                                        <div className='weather__next-days'>
-                                        {this.state.newLocation.data.map((day, index) => {
-                                            return index > 0 && index < 6 
-                                                ?  <div key={index} className='weather__next-day'>
-                                                        <div>{this.state.months[new Date(day.valid_date).getMonth()] + " " + new Date(day.valid_date).getDate()}</div>
-                                                        <img className='weather__next-day-image' 
-                                                            src={`https://www.weatherbit.io/static/img/icons/${day.weather.icon}.png`} 
-                                                            alt={day.weather.description}/>
-                                                        <div className='weather__next-day-temp'>{day.max_temp}&#176;</div>
-                                                    </div>
-                                            : null
-                                        })}
-                                        </div>
-                                </div>
-                            }
-                        
+                    <div className={cx('error__no-location', { 'error__no-location--visible': !this.state.searchCityNotFound })}>
+                        <NextDaysWeather 
+                            newLocation={this.state.newLocation}
+                            months={this.state.months}/>
                     </div>
                     
                 </div>
